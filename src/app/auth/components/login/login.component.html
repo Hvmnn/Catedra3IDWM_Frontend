@@ -1,0 +1,40 @@
+<div class="max-w-md mx-auto mt-10 p-4 shadow-lg bg-white rounded-md">
+  <h2 class="text-xl font-semibold mb-4 text-center">Iniciar Sesión</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        [class.border-red-500]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+      />
+      <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-500">
+        El correo electrónico es obligatorio y debe ser válido.
+      </small>
+    </div>
+
+    <div class="mb-4">
+      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+      />
+      <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500">
+        La contraseña es obligatoria.
+      </small>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="loginForm.invalid"
+      class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+    >
+      Iniciar Sesión
+    </button>
+  </form>
+</div>
