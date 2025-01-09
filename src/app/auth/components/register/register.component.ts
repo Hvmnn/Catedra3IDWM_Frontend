@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  providers: [AuthService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -28,7 +30,7 @@ export class RegisterComponent {
           alert('Registro exitoso');
           this.router.navigate(['/login']);
         },
-        error: (error) => alert(error.error),
+        error: (err) => console.error(err.error),
       });
     }
   }
