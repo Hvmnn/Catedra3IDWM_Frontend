@@ -10,6 +10,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   const router = inject(Router);
+  alert('Debe iniciar sesión para acceder a esta página');
   router.navigate(['/login'], {
     queryParams: {returnUrl: state.url},
   });

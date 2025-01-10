@@ -30,7 +30,15 @@ export class RegisterComponent {
           alert('Registro exitoso');
           this.router.navigate(['/login']);
         },
-        error: (err) => console.error(err.error),
+        error: (err) => {
+          if (err.status === 400) {
+            alert('El correo electronico ya está registrado.');
+            this.registerForm.patchValue({ password: ''});
+            this.registerForm.get('password')?.markAsUntouched();
+          } else {
+            alert('Ocurrió un error inesperado. Por favor, intente más tarde.');
+          }
+        }
       });
     }
   }

@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   private apiUrl = 'http://localhost:5168/api/auth';
+  private tokenKey = 'jwt';
 
   constructor(private http: HttpClient) { }
 
@@ -17,5 +18,26 @@ export class AuthService {
 
   login(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, data);
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  getToken(): string | null {
+    const token = localStorage.getItem(this.tokenKey);
+    return token;
+  }
+
+  saveToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  clearToken(): void {
+    localStorage.removeItem(this.tokenKey);
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
   }
 }

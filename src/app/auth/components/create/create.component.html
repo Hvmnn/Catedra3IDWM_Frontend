@@ -1,0 +1,56 @@
+<div class="max-w-lg mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+  <h2 class="text-xl font-bold text-center text-gray-800 dark:text-white mb-6">Crear Nuevo Post</h2>
+
+  <form [formGroup]="createPostForm" (ngSubmit)="onSubmit()">
+    <!-- Mensaje de error para usuario no autenticado -->
+    <div *ngIf="!userId" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center">
+      No estás autenticado. Por favor, inicia sesión para crear un post.
+    </div>
+
+    <!-- Campo Título -->
+    <div class="mb-4">
+      <label for="title" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Título</label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="Ingrese el título del post"
+        class="block w-full px-4 py-2 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+        [class.border-red-500]="createPostForm.get('title')?.invalid && createPostForm.get('title')?.touched"
+      />
+      <small *ngIf="createPostForm.get('title')?.invalid && createPostForm.get('title')?.touched" class="text-red-500 mt-1 block">
+        El título debe tener al menos 5 caracteres.
+      </small>
+    </div>
+
+    <!-- Campo Imagen -->
+    <div class="mb-4">
+      <label for="image" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Imagen</label>
+      <input
+        id="image"
+        type="file"
+        (change)="onImageSelected($event)"
+        accept="image/png, image/jpeg"
+        class="block w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg cursor-pointer dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 focus:outline-none"
+      />
+      <small *ngIf="createPostForm.get('image')?.invalid && createPostForm.get('image')?.touched" class="text-red-500 mt-1 block">
+        Debes seleccionar una imagen en formato JPG o PNG.
+      </small>
+    </div>
+
+    <!-- Preview de la Imagen -->
+    <div *ngIf="imagePreview" class="mb-4">
+      <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Vista previa:</label>
+      <img [src]="imagePreview" alt="Preview" class="w-full h-48 object-cover rounded-lg shadow-md" />
+    </div>
+
+    <!-- Botón de Envío -->
+    <button
+      type="submit"
+      [disabled]="createPostForm.invalid || !userId"
+      class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none disabled:bg-gray-400 disabled:cursor-not-allowed"
+    >
+      Crear Post
+    </button>
+  </form>
+</div>

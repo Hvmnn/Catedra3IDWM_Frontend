@@ -1,26 +1,57 @@
-<div class="max-w-md mx-auto mt-10 p-4 shadow-lg bg-white rounded-md">
-  <h2 class="text-xl font-semibold mb-4">Registro</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="mb-4">
-      <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+<div class="max-w-md mx-auto mt-10 p-6 shadow-lg bg-white rounded-lg border border-gray-200">
+  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Registro</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Email Field -->
+    <div>
+      <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Correo Electrónico</label>
       <input
         id="email"
         type="email"
         formControlName="email"
-        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+        placeholder="Ingrese su correo electrónico"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         [class.border-red-500]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
       />
+      <p
+        *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        class="mt-1 text-sm text-red-600"
+      >
+        El correo electrónico es obligatorio y debe ser válido.
+      </p>
     </div>
-    <div class="mb-4">
-      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+
+    <!-- Password Field -->
+    <div>
+      <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
       <input
         id="password"
         type="password"
         formControlName="password"
-        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+        placeholder="Ingrese su contraseña"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         [class.border-red-500]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
       />
+      <p
+        *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched"
+        class="mt-1 text-sm text-red-600"
+      >
+        La contraseña es obligatoria.
+      </p>
+      <p
+        *ngIf="registerForm.get('password')?.hasError('pattern') && registerForm.get('password')?.touched"
+        class="mt-1 text-sm text-red-600"
+      >
+        La contraseña debe tener mínimo 6 caracteres y por lo menos un dígito.
+      </p>
     </div>
-    <button type="submit" class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">Registrarse</button>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      [disabled]="registerForm.invalid"
+      class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-gray-400 disabled:cursor-not-allowed"
+    >
+      Registrarse
+    </button>
   </form>
 </div>

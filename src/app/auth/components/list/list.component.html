@@ -1,22 +1,56 @@
 <div class="max-w-7xl mx-auto mt-10">
-  <h2 class="text-2xl font-semibold text-center mb-6">Listado de Posts</h2>
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold">Listado de Posts</h2>
+    <button
+      (click)="redirectToCreate()"
+      class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+    >
+      Crear Nuevo Post
+    </button>
+  </div>
 
-  <!-- Mensaje de carga -->
   <div *ngIf="isLoading" class="text-center">
-    <p>Cargando posts...</p>
+    <div role="status" class="flex justify-center items-center">
+      <svg
+        aria-hidden="true"
+        class="mr-2 w-8 h-8 text-gray-200 animate-spin fill-blue-600"
+        viewBox="0 0 100 101"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M100 50.59C100 78.2058 77.6142 100 50 100C22.3858 100 0 77.6142 0 50.59C0 22.9742 22.3858 0.589844 50 0.589844C77.6142 0.589844 100 22.9742 100 50.59ZM9.08157 50.59C9.08157 74.1212 25.8788 90.9184 50 90.9184C74.1212 90.9184 90.9184 74.1212 90.9184 50.59C90.9184 26.0587 74.1212 9.26144 50 9.26144C25.8788 9.26144 9.08157 26.0587 9.08157 50.59Z"
+          fill="currentColor"
+        />
+        <path
+          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 96.8987 33.579C94.1817 27.3581 89.8211 21.7993 84.2363 17.4415C78.6514 13.0837 72.0321 10.0503 65.0334 8.61904C60.828 7.67776 56.4297 7.36389 52.0978 7.69453C49.5464 7.90024 47.4413 9.84838 47.0543 12.423C46.6674 14.9976 48.1396 17.2971 50.5479 17.9609C53.7578 18.8145 56.9316 19.8851 60.0038 21.159C65.3231 23.2854 70.0705 26.4858 73.9173 30.5967C77.764 34.7075 80.6386 39.6417 82.3237 45.0101C83.0604 47.4518 85.5423 49.1796 88.0676 48.4657C90.5929 47.7519 92.3052 45.3164 91.5684 42.8747C90.0685 37.8478 87.9909 33.1325 85.3712 28.9299C82.7514 24.7273 79.6298 21.1041 76.1234 18.2677C72.617 15.4312 68.7927 13.4119 64.7723 12.3098C60.752 11.2077 56.6079 11.043 52.5411 11.8293C49.7971 12.3456 47.6714 14.9053 47.6714 17.6895C47.6714 20.4737 49.7971 22.7993 52.5411 23.3156C56.5193 24.1407 60.5122 25.3784 64.5013 26.9837C69.5541 28.8811 74.1824 31.5444 78.1821 34.8712C82.1817 38.1981 85.5 42.0995 87.9496 46.4106C89.3036 48.896 91.8597 50.7551 94.5464 51.5678C97.233 52.3805 99.9464 52.0471 102.332 50.6078C103.654 49.7755 104.709 48.7216 105.369 47.4984C106.029 46.2753 106.287 44.9235 106.124 43.5762C105.962 42.229 105.393 40.9365 104.502 39.8661C103.612 38.7958 102.419 38.0197 101.048 37.6378C99.6769 37.2559 98.1722 37.2896 96.8068 37.7269C95.4413 38.1641 94.3161 38.9916 93.5758 40.0616"
+          fill="#3b82f6"
+        />
+      </svg>
+      <p class="text-gray-500">Cargando posts...</p>
+    </div>
   </div>
 
-  <!-- Mensaje de "No hay posts" -->
   <div *ngIf="!isLoading && posts.length === 0" class="text-center">
-    <p>No hay posts disponibles.</p>
+    <p class="text-gray-600">No hay posts disponibles.</p>
+    <button
+      (click)="redirectToCreate()"
+      class="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
+    >
+      Crear el Primer Post
+    </button>
   </div>
 
-  <!-- Listado de posts -->
   <div *ngIf="posts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let post of posts" class="p-4 border rounded shadow-lg bg-white">
-      <h3 class="text-lg font-semibold mb-2">{{ post.title }}</h3>
+    <div
+      *ngFor="let post of posts"
+      class="p-4 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+    >
+      <h3 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ post.title }}</h3>
       <img [src]="post.imageUrl" alt="{{ post.title }}" class="w-full h-48 object-cover rounded mb-2" />
-      <p class="text-sm text-gray-600">Publicado: {{ post.publishedDate | date: 'dd/MM/yyyy HH:mm' }}</p>
+      <p class="text-sm text-gray-600 dark:text-gray-400">
+        Publicado: {{ post.publishedDate | date: 'dd/MM/yyyy HH:mm' }}
+      </p>
     </div>
   </div>
 </div>

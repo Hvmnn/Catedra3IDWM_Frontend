@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule],
   providers: [AuthService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class LoginComponent {
 
   loginForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
@@ -23,23 +24,31 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
-        next: (response: any) => {
-          localStorage.setItem('jwt', response.token);
-
-          this.router.navigate(['/posts']);
-        },
-        error: (err) => {
-          if (err.status === 401) {
-            alert('Credenciales inválidas');
-          } else {
-            alert('Ocurrió un error inesperado');
-          }
-        },
-      });
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Por favor, complete los campos correctamente.';
+      return;
     }
+
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (response) => {
+        this.authService.setToken(response.token);
+        this.router.navigate(['/posts']);
+      },
+      error: (error) => {
+        if (error.status === 401) {
+          this.errorMessage = 'Credenciales inválidas. Por favor, intente de nuevo.';
+          this.loginForm.patchValue({ password: '' });
+          this.loginForm.get('password')?.markAsUntouched();
+        } else {
+          this.errorMessage = 'Ocurrió un error inesperado. Por favor, intente más tarde.';
+        }
+      },
+    });
+  }
+
+  redirectToRegister(): void {
+    this.router.navigate(['/register']);
   }
 
 }
